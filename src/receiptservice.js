@@ -4,6 +4,8 @@ import { db } from "firebase_config";
 
 const ReceiptCollection = collection(db, "beneficiaries");
 const InternopayCollection = collection(db, "internopay");
+const UsersCollection = collection(db, "Users");
+
 class ReceiptDetails {
   addBeneficiaries = (newItem) => {
     return addDoc(ReceiptCollection, newItem);
@@ -35,6 +37,8 @@ class ReceiptDetails {
     const receiptItem = doc(db, "beneficiaries", id);
     return getDoc(receiptItem);
   };
+
+  getUsers = () => getDocs(UsersCollection);
 }
 
 export default new ReceiptDetails();

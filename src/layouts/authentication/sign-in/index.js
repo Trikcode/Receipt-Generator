@@ -13,11 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
@@ -34,38 +33,40 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "firebase_config";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "firebase_config";
+
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import { setUser } from "../../../auth";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [users, setUsers] = useState([]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const register = async () => {
-    try {
-      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-      console.log(user);
-    } catch (error) {
-      console.log(error);
-    }
+  const getUsers = async () => {
+    const usernames = await getDocs(collection(db, "Users"));
+    setUsers(usernames.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
+  useEffect(() => {
+    getUsers();
+  }, []);
 
-  const login = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      setLoginEmail(user);
-      setLoginPassword(user);
-    } catch (error) {
-      console.log(error);
+  const login = () => {
+    const found = users.filter((user) => user.email === email && user.password === atob(password));
+    if (found.length > 0) {
+      setUser(JSON.stringify(found[0]));
+      alert("Login Successful");
+      navigate("/dashboard");
+    } else {
+      alert("Invalid Credentials");
     }
   };
 
@@ -113,20 +114,18 @@ function Basic() {
               <MDInput
                 type="email"
                 label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 fullWidth
-                onChange={(event) => {
-                  setRegisterEmail(event.target.value);
-                }}
               />
             </MDBox>
             <MDBox mb={2}>
               <MDInput
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 label="Password"
                 fullWidth
-                onChange={(event) => {
-                  setRegisterPassword(event.target.value);
-                }}
               />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
@@ -146,29 +145,11 @@ function Basic() {
                 variant="gradient"
                 color="info"
                 fullWidth
-                component={Link}
-                to="/dashboard"
                 fontWeight="medium"
-                textGradient
                 onClick={login}
               >
                 sign in
               </MDButton>
-            </MDBox>
-            <MDBox mt={3} mb={1} textAlign="center">
-              <MDTypography variant="button" color="text">
-                <MDTypography
-                  component={Link}
-                  to="/dashboard"
-                  variant="button"
-                  color="info"
-                  fontWeight="medium"
-                  textGradient
-                  onClick={register}
-                >
-                  Create User
-                </MDTypography>
-              </MDTypography>
             </MDBox>
           </MDBox>
         </MDBox>

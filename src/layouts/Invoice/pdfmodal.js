@@ -8,14 +8,13 @@ import { Modal } from "react-bootstrap";
 import InvoiceTableHeader from "components/InvoiceTable/InvoiceTableHeader";
 import html2pdf from "html2pdf.js";
 import logo from "../../assets/logo.svg";
-import "./Invoice.css";
 
 const PDFmodal = (props) => {
   const finalitems = props.newitemlist;
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
   const generatePDF = () => {
-    const stage = document.querySelector(".container");
+    const stage = document.querySelector(".pdf-container");
     const opt = {
       margin: 0,
       filename: "invoice.pdf",
@@ -37,18 +36,19 @@ const PDFmodal = (props) => {
             centered
             style={{ zIndex: "10000" }}
           >
-            <Modal.Header>
-              <Modal.Title
-                id="contained-modal-title-vcenter customer"
-                style={{ paddingLeft: "20%" }}
-              >
-                INVOICE
-              </Modal.Title>
+            <Modal.Header
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Modal.Title>INVOICE</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="pdf-container">
-                <div className="container">
-                  <div className="head">
+                <div className="final-container">
+                  <div className="head" style={{ padding: 0, margin: 0 }}>
                     <div className="brand">
                       <img src={logo} alt="logo" />
                       <h2 className="type">Outward Remittance</h2>
@@ -79,8 +79,8 @@ const PDFmodal = (props) => {
               </div>
             </Modal.Body>
             <Modal.Footer>
-              <button type="button" onClick={generatePDF}>
-                GeneratePDF
+              <button type="button" className="btn" onClick={generatePDF}>
+                Generate PDF
               </button>
             </Modal.Footer>
           </Modal>

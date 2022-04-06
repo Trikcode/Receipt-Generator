@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -19,7 +19,6 @@ import MDButton from "components/MDButton";
 
 // Material Dashboard 2 React example components
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
-
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
@@ -31,12 +30,14 @@ import {
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
+import { deleteUser } from "auth";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
+  const navigate = useNavigate();
 
   let textColor = "white";
 
@@ -120,10 +121,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           }
         />
       );
+    } else {
+      returnValue = null;
     }
 
     return returnValue;
   });
+  const logout = () => {
+    deleteUser();
+    navigate("/");
+  };
 
   return (
     <SidenavRoot
@@ -166,14 +173,13 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
         <MDButton
-          component="a"
-          target="_blank"
           rel="noreferrer"
           variant="gradient"
           color={sidenavColor}
+          onClick={logout}
           fullWidth
         >
-          Safe Pay
+          Log out
         </MDButton>
       </MDBox>
     </SidenavRoot>

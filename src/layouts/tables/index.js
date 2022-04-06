@@ -26,7 +26,7 @@ import HistoryIcon from "@mui/icons-material/History";
 
 import { db } from "firebase_config";
 import "./adddetails.css";
-import "./Invoice.css";
+import "assets/Invoice.css";
 
 function Tables() {
   const [viewbenefiaries, setViewbeneficiaries] = useState(false);

@@ -1,9 +1,17 @@
 /* eslint-disable */
 import React from "react";
-import "layouts/Invoice/Invoice.css";
+// import "layouts/Invoice/Invoice.css";
 
 function InvoiceTableHeader(props) {
   const field = props.constantitems;
+  var myInt = parseInt(field.remitamt);
+  var myInt1 = parseInt(field.paycharge);
+  var myInt2 = parseInt(field.tamount);
+  var myInt3 = parseInt(field.tcharge);
+  var myInt4 = parseInt(field.remitcost);
+
+  const subtotal = parseInt(myInt + myInt1 + myInt2 + myInt3 + myInt4);
+  const total = parseInt(subtotal - myInt1);
   return (
     <div className="body">
       <div className="beneficiary">
@@ -102,14 +110,14 @@ function InvoiceTableHeader(props) {
         <div className="b-right">
           <div className="right">
             <p>
-              <strong>Sub Total:</strong> USD 220.00
+              <strong>Sub Total:</strong> USD {subtotal}.00
             </p>
             <p>
-              <strong>Tax:</strong> USD 220.00
+              <strong>Tax:</strong> USD {myInt1}.00
             </p>
             <div className="total">
               <p>
-                <strong>Total:</strong> USD 220.00
+                <strong>Total:</strong> USD {total}.00
               </p>
             </div>
           </div>
