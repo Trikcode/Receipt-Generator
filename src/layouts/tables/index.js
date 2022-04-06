@@ -22,11 +22,8 @@ import Footer from "examples/Footer";
 import ViewBeneficiaryModal from "./ViewBeneficials";
 import AdddetailsModal from "./beneficiarymodel";
 import { collection, getDocs } from "firebase/firestore";
-import HistoryIcon from "@mui/icons-material/History";
-
 import { db } from "firebase_config";
-import "./adddetails.css";
-import "assets/Invoice.css";
+import "./style.css";
 
 function Tables() {
   const [viewbenefiaries, setViewbeneficiaries] = useState(false);
@@ -74,16 +71,7 @@ function Tables() {
                   Beneficiaries Table
                 </MDTypography>
               </MDBox>
-              <div style={{ display: "flex", justifyContent: "space-between", padding: 20 }}>
-                <HistoryIcon
-                  type="button"
-                  onClick={getbeneficiaries}
-                  onMouseEnter={() => setIsShown(true)}
-                  onMouseLeave={() => setIsShown(false)}
-                />
-                {isShown && (
-                  <div style={{ fontWeight: 10, color: "#33A8FF" }}>Click to Refresh Table</div>
-                )}
+              <div style={{ textAlign: "right", padding: 10 }}>
                 <button
                   className="btn create"
                   type="button"
@@ -96,12 +84,37 @@ function Tables() {
                 <TableContainer>
                   <Table>
                     <MDBox component="thead">
-                      <TableRow style={{ background: "#dddddd" }}>
-                        <TableCell style={{ fontWeight: 500 }}>No.</TableCell>
-                        <TableCell style={{ fontWeight: 500 }}>Names</TableCell>
-                        <TableCell style={{ fontWeight: 500 }}>Acount Number</TableCell>
-                        <TableCell style={{ fontWeight: 500, textAlign: "center" }}>
-                          Action
+                      <TableRow>
+                        <TableCell>
+                          <MDTypography variant="h6" className="rowcolor">
+                            No.
+                          </MDTypography>
+                        </TableCell>
+                        <TableCell>
+                          <MDTypography variant="h6" className="rowcolor">
+                            {" "}
+                            Names
+                          </MDTypography>
+                        </TableCell>
+                        <TableCell>
+                          <MDTypography variant="h6" className="rowcolor">
+                            {" "}
+                            Acount Number
+                          </MDTypography>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            maxWidth: 150,
+                          }}
+                        >
+                          <MDTypography variant="h6" className="rowcolor">
+                            Edit
+                          </MDTypography>
+                          <MDTypography variant="h6" className="rowcolor">
+                            Action
+                          </MDTypography>
                         </TableCell>
                       </TableRow>
                     </MDBox>
@@ -111,15 +124,27 @@ function Tables() {
                         i++;
                         return (
                           <TableRow key={id}>
-                            <TableCell>{i}.</TableCell>
-                            <TableCell>{baccountname}</TableCell>
-                            <TableCell>{baccountnumber}</TableCell>
+                            <TableCell>
+                              <MDTypography variant="h6" className="itemcolor">
+                                {i}.
+                              </MDTypography>
+                            </TableCell>
+                            <TableCell>
+                              <MDTypography variant="h6" className="itemcolor">
+                                {baccountname}
+                              </MDTypography>
+                            </TableCell>
+                            <TableCell>
+                              <MDTypography variant="h6" className="itemcolor">
+                                {baccountnumber}
+                              </MDTypography>
+                            </TableCell>
                             <TableCell
                               style={{
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "space-between",
-                                maxWidth: 140,
+                                maxWidth: 155,
                               }}
                             >
                               <Icon
@@ -129,7 +154,7 @@ function Tables() {
                               >
                                 edit
                               </Icon>
-                              <MDTypography style={{ fontSize: 15 }} onClick={() => navigate(item)}>
+                              <MDTypography className="itemcolor" onClick={() => navigate(item)}>
                                 {" "}
                                 View
                               </MDTypography>
@@ -151,6 +176,7 @@ function Tables() {
             <AdddetailsModal
               show={showbenedetails}
               beneid={beneid}
+              refresh={getbeneficiaries}
               close={() => setShowaddbenedetails(false)}
             />
           </Grid>

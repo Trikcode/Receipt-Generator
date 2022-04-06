@@ -6,12 +6,12 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import { Grid } from "@mui/material";
 import { Form, Alert, Button, Modal } from "react-bootstrap";
 import ReceiptDetails from "receiptservice";
-
 import "./adddetails.css";
 
 const AdddetailsModal = (props) => {
   const newid = props.beneid;
-
+  const getnewitems = props.refresh;
+  const closemodal = props.close;
   const [baccountnumber, setBaccountnumber] = useState("");
   const [baccountname, setBaccountname] = useState("");
   const [baddress, setBeneficiaryaccaddress] = useState("");
@@ -61,6 +61,8 @@ const AdddetailsModal = (props) => {
     setBbankcode("");
     setBbankname("");
     setBankddress("");
+    getnewitems();
+    closemodal();
   };
   const editBeneHandler = async () => {
     setMessage("");

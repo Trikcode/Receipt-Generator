@@ -1,0 +1,27 @@
+.rowcolor {
+ position: relative;
+ text-align: left;
+ opacity: 0.7;
+ background: transparent;
+ color: #7b809a;
+ border-radius: none;
+ box-shadow: none;
+ font-size: 0.65rem;
+ font-weight: 700;
+ text-transform: uppercase;
+}
+.itemcolor{
+ margin: 0;
+ font-family: "Roboto",
+ "Helvetica",
+ "Arial",
+ sans-serif;
+ font-size: 0.875rem;
+ font-weight: 300;
+ line-height: 1.5;
+ text-transform: capitalize;
+ letter-spacing: 0.02857em;
+ text-decoration: none;
+ color: #344767;
+ font-weight: 600;
+}

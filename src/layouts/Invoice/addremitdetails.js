@@ -12,8 +12,9 @@ import { db } from "firebase_config";
 
 const AddRemitdetaisModal = (props) => {
   const newid = props.itemid;
+  const getnewitems = props.refresh;
+  const closemodal = props.close;
   const [state, setState] = useState({});
-
   const [tamount, setTamount] = useState("");
   const [paycharge, setPaycharge] = useState("");
   const [tcharge, setTcharge] = useState("");
@@ -27,9 +28,7 @@ const AddRemitdetaisModal = (props) => {
   const [bankcode, setBankcode] = useState("");
   const [bankname, setBankname] = useState("");
   const [bankaddress, setBankaddress] = useState("");
-
   const [paypurpose, setPaypurpose] = useState("");
-
   const [message, setMessage] = useState({ error: false, msg: "" });
   const SubmitInvoice = async (e) => {
     e.preventDefault();
@@ -95,6 +94,8 @@ const AddRemitdetaisModal = (props) => {
     setTamount("");
     setTcharge("");
     setBankaddress("");
+    getnewitems();
+    closemodal();
   };
   const [newbeneficiary, setBeneficiarylist] = useState([]);
   const getbeneficiaries = async () => {

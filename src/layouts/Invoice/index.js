@@ -21,7 +21,8 @@ import AddRemitdetaisModal from "./addremitdetails";
 import PDFmodal from "./pdfmodal";
 import Icon from "@mui/material/Icon";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import HistoryIcon from "@mui/icons-material/History";
+import "./style.css";
+import "assets/Invoice.css";
 
 function InvoiceTable() {
   const [showremitdetails, setShowaddremitdetails] = useState(false);
@@ -68,16 +69,7 @@ function InvoiceTable() {
                   Invoice Table
                 </MDTypography>
               </MDBox>
-              <div className="create-container">
-                <HistoryIcon
-                  type="button"
-                  onClick={getInvoicenames}
-                  onMouseEnter={() => setIsShown(true)}
-                  onMouseLeave={() => setIsShown(false)}
-                />
-                {isShown && (
-                  <div style={{ fontWeight: 10, color: "#33A8FF" }}>Click to Refresh Table</div>
-                )}
+              <div style={{ textAlign: "right", padding: 10 }}>
                 <button
                   className="btn create"
                   type="button"
@@ -86,51 +78,103 @@ function InvoiceTable() {
                   Create
                 </button>
               </div>
+              <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+                <MDBox>
+                  <MDTypography variant="h6" gutterBottom>
+                    Customers
+                  </MDTypography>
+                </MDBox>
+              </MDBox>
+              <MDBox pr={4}>
+                <Table>
+                  <MDBox component="thead">
+                    <TableRow>
+                      <TableCell>
+                        <MDTypography variant="h6" className="rowcolor">
+                          No.
+                        </MDTypography>
+                      </TableCell>
+                      <TableCell>
+                        <MDTypography variant="h6" className="rowcolor">
+                          {" "}
+                          Names
+                        </MDTypography>
+                      </TableCell>
+                      <TableCell>
+                        <MDTypography variant="h6" className="rowcolor">
+                          {" "}
+                          Acount Number
+                        </MDTypography>
+                      </TableCell>
+                      <TableCell>
+                        <MDTypography variant="h6" className="rowcolor">
+                          Amount
+                        </MDTypography>
+                      </TableCell>
+                      <TableCell style={{ display: "flex", justifyContent: "space-between" }}>
+                        <MDTypography variant="h6" className="rowcolor">
+                          Edit
+                        </MDTypography>
+                        <MDTypography variant="h6" className="rowcolor">
+                          PDF
+                        </MDTypography>
+                      </TableCell>
+                    </TableRow>
+                  </MDBox>
+                  <TableBody>
+                    {invoicedetails.map((invoiceitems) => {
+                      const { id, beneficiaryaccnumber, beneficiaryaccname } = invoiceitems;
+                      let myInt = parseInt(invoiceitems.remitamt);
+                      let myInt1 = parseInt(invoiceitems.paycharge);
+                      let myInt2 = parseInt(invoiceitems.tamount);
+                      let myInt3 = parseInt(invoiceitems.tcharge);
+                      let myInt4 = parseInt(invoiceitems.remitcost);
 
-              <MDBox pt={3}>
-                <TableContainer>
-                  <Table>
-                    <MDBox component="thead">
-                      <TableRow style={{ background: "#dddddd" }}>
-                        <TableCell style={{ fontWeight: 500 }}>No.</TableCell>
-                        <TableCell style={{ fontWeight: 500 }}>Names</TableCell>
-                        <TableCell style={{ fontWeight: 500 }}>Acount Number</TableCell>
-                        <TableCell style={{ fontWeight: 500, textAlign: "center" }}>
-                          Action
-                        </TableCell>
-                      </TableRow>
-                    </MDBox>
-                    <TableBody>
-                      {invoicedetails.map((invoiceitems) => {
-                        const { id, beneficiaryaccnumber, beneficiaryaccname } = invoiceitems;
-                        i++;
-                        return (
-                          <TableRow key={id}>
-                            <TableCell>{i}.</TableCell>
-                            <TableCell>{beneficiaryaccname}</TableCell>
-                            <TableCell>{beneficiaryaccnumber}</TableCell>
-                            <TableCell
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginRight: 20,
-                              }}
-                            >
-                              <Icon variant="button" color="warning" onClick={() => editField(id)}>
-                                edit
-                              </Icon>
-                              &nbsp;
-                              <PictureAsPdfIcon
-                                variant="button"
-                                onClick={() => transferPdfitems(invoiceitems)}
-                              />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                      const subtotal = parseInt(myInt + myInt1 + myInt2 + myInt3 + myInt4);
+                      const total = parseInt(subtotal - myInt1);
+                      i++;
+                      return (
+                        <TableRow key={id}>
+                          <TableCell>
+                            <MDTypography variant="h6" className="itemcolor">
+                              {i}.
+                            </MDTypography>
+                          </TableCell>
+                          <TableCell>
+                            <MDTypography variant="h6" className="itemcolor">
+                              {beneficiaryaccname}
+                            </MDTypography>
+                          </TableCell>
+                          <TableCell>
+                            <MDTypography variant="h6" className="itemcolor">
+                              {beneficiaryaccnumber}
+                            </MDTypography>
+                          </TableCell>
+                          <TableCell>
+                            <MDTypography variant="h6" className="itemcolor">
+                              {total}
+                            </MDTypography>
+                          </TableCell>
+                          <TableCell
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Icon variant="button" color="warning" onClick={() => editField(id)}>
+                              edit
+                            </Icon>
+                            &nbsp;
+                            <PictureAsPdfIcon
+                              variant="button"
+                              onClick={() => transferPdfitems(invoiceitems)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
               </MDBox>
             </Card>
           </Grid>
@@ -142,6 +186,7 @@ function InvoiceTable() {
           <AddRemitdetaisModal
             show={showremitdetails}
             itemid={itemid}
+            refresh={getInvoicenames}
             close={() => setShowaddremitdetails(false)}
           />
         </Grid>
